@@ -1,5 +1,5 @@
 import * as cls from 'cls-hooked';
-import { getLogger } from '../logger/logger';
+import { getLogger } from '../../logger/src/logger';
 
 const namespace = cls.createNamespace('trace');
 

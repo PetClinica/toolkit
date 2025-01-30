@@ -1,5 +1,5 @@
-import { setLogger } from "../logger/logger";
-import { TestLogger } from "../test/test-logger";
+import { setLogger } from "../../logger/src/logger";
+import { TestLogger } from "../../test/src/test-logger";
 import { trace } from "./trace";
 
 describe('run with trace', () => {

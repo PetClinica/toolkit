@@ -5,6 +5,7 @@ export default defineConfig({
     globals: true,
     coverage: {
       enabled: true,
+      reporter: ['text', 'json', 'html'],
       exclude: [
         ...(configDefaults.coverage.exclude || []),
         '**/node_modules/**',

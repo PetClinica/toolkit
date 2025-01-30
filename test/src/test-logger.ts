@@ -1,4 +1,4 @@
-import { Logger } from "../logger/logger";
+import { Logger } from "../../logger/src/logger";
 
 export type LogCall = {
     msg: string,

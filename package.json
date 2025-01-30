@@ -1,12 +1,24 @@
 {
+  "name": "toolkit",
+  "version": "1.0.0",
+  "description": "Typescript toolkit",
+  "private": true,
+  "workspaces": [
+    "discord",
+    "logger",
+    "test",
+    "trace"
+  ],
   "scripts": {
-    "test": "vitest run"
+    "build": "tsc -b",
+    "clean": "tsc -b --clean",
+    "test": "vitest run --root ./",
+    "test:watch": "vitest --root ./"
   },
   "dependencies": {
-    "cls-hooked": "^4.2.2"
+    "typescript": "^5.6.3"
   },
   "devDependencies": {
-    "@types/cls-hooked": "^4.3.9",
     "@vitest/coverage-v8": "^3.0.4",
     "vitest": "^3.0.4"
   }

@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "composite": true,
-    "rootDir": "./",
+    "types": ["vitest/globals"],
+    "rootDir": "./src",
     "target": "es2022",
     "lib": ["ES2023"],
     "module": "Node16",
@@ -14,5 +15,9 @@
     "outDir": "./dist",
   },
   "exclude": ["node_modules"],
-  "include": ["src"]
+  "include": ["src"],
+  "references": [
+    { "path": "../logger" },
+    { "path": "../test" }
+  ]
 }

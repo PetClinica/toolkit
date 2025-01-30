@@ -1,9 +1,11 @@
 {
-  "name": "discord",
+  "name": "logger",
   "version": "1.0.0",
   "devDependencies": {
-    "@types/node": "^22.8.6",
-    "discord.js": "^14.16.3"
+    "@types/node": "^22.8.6"
+  },
+  "dependencies": {
+    "winston": "^3.17.0"
   },
   "peerDependencies": {
     "typescript": "^5.6.3"
