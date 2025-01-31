@@ -3,6 +3,5 @@
 **/.env
 **/build/
 **/coverage/
-**/dist/
 
 *.tsbuildinfo
