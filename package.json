@@ -10,7 +10,7 @@
     "trace"
   ],
   "scripts": {
-    "build": "tsc -b",
+    "build": "npm run clean && tsc -b",
     "clean": "tsc -b --clean",
     "test": "vitest run --root ./",
     "test:watch": "vitest --root ./"

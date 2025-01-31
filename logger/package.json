@@ -2,11 +2,7 @@
   "name": "logger",
   "version": "1.0.0",
   "main": "dist/logger.js",
-  "types": "dist/types/logger.d.ts",
-  "scripts": {
-    "build": "tsc -p .",
-    "postinstall": "npm run build"
-  },
+  "types": "dist/logger.d.ts",
   "devDependencies": {
     "@types/node": "^22.8.6"
   },

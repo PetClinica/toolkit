@@ -13,12 +13,19 @@ git submodule update --init --recursive
 
 If you wish, you can cd into packages/toolkit and point to the branch or commit that you want.
 
+When you finish, build the lib:
+
+```shell
+cd packages/toolkit
+npm run build
+```
+
 Now, just add a dependency on package.json for the module that you wish like this:
 
 ```json
 ...
   "dependencies": {
-    "logger": "file:./packages/toolkit/logger"
+    "logger": "file:./packages/toolkit/logger/dist/logger"
   }
 ...
 ```

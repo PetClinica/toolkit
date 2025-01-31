@@ -2,7 +2,7 @@
   "name": "test",
   "version": "1.0.0",
   "main": "dist/test-logger.js",
-  "types": "dist/types/test-logger.d.ts",
+  "types": "dist/test-logger.d.ts",
   "devDependencies": {
     "@types/node": "^22.8.6"
   },
