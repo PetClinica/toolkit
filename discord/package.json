@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "dist/discord.js",
   "types": "dist/types/discord.d.ts",
+  "scripts": {
+    "build": "tsc -p .",
+    "postinstall": "npm run build"
+  },
   "devDependencies": {
     "@types/node": "^22.8.6",
     "discord.js": "^14.16.3"

@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "dist/trace.js",
   "types": "dist/types/trace.d.ts",
+  "scripts": {
+    "build": "tsc -p .",
+    "postinstall": "npm run build"
+  },
   "devDependencies": {
     "@types/cls-hooked": "^4.3.9",
     "@types/node": "^22.8.6"
