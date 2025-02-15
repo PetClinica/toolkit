@@ -1,67 +1,38 @@
 # Toolkit
 
-## How to install
+Tracer interface and implementations
 
-With nodejs we can't directly install dependencies of git subprojects.
-In order to do it, we can use git submodules to make a local reference of the project and them point to the desired folder.
-Example:
+## Usage
 
-```shell
-git submodule add https://github.com/PetClinica/toolkit.git ./packages/toolkit
-git submodule update --init --recursive
+How to trace an execution:
+
+```ts
+import { trace } from "trace";
+
+async function execute(): Promise<string> {
+  return Promise.resolve("hello");
+}
+
+async function main() {
+  const result: string = await trace("trace-name", async () => {
+    return await execute();
+  });
+  console.log(result); // prints hello
+}
+
+main();
 ```
 
-If you wish, you can cd into packages/toolkit and point to the branch or commit that you want.
+How to set a new tracer implementation:
 
-When you finish, build the lib:
+```ts
+import { setTrace, Trace } from 'trace';
 
-```shell
-cd packages/toolkit
-npm run build
-```
+class MyTrace implements Trace {
+  ... // implement the methods here
+}
 
-Now, just add a dependency on package.json for the module that you wish like this:
-
-```json
-...
-  "dependencies": {
-    "logger": "file:./packages/toolkit/logger/dist/logger"
-  }
-...
-```
-
-## Discord
-
-[Details here](./discord/README.MD)
-
-## Trace
-
-[Details here](./trace/README.MD)
-
-## Logger
-
-[Details here](./logger/README.MD)
-
-## How to remove git submodules
-
-```shell
-SUBMODULE_PATH="packages/toolkit"
-
-# 1. Remove the submodule from the .gitmodules file
-git submodule deinit -f $SUBMODULE_PATH
-git rm -f $SUBMODULE_PATH
-
-# 2. Remove the submodule directory from the working directory
-rm -rf .git/modules/$SUBMODULE_PATH
-
-# 3. Remove the submodule reference from the Git index
-git commit -m "Remove submodule $SUBMODULE_PATH"
-
-# 4. Remove the actual submodule directory (for local cleanup)
-rm -rf $SUBMODULE_PATH
-
-# 5. (Optional) If you want to delete any residual Git submodule data
-git gc --prune=now
-
-echo "Submodule $SUBMODULE_PATH removed successfully."
+setTrace((name: string, parent: Trace | null) => {
+  return MyTrace(name, parent)
+})
 ```
