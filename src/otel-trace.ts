@@ -2,28 +2,53 @@ import { trace } from "@opentelemetry/api";
 import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
 import { ZipkinExporter } from "@opentelemetry/exporter-zipkin";
 import { NodeSDK } from "@opentelemetry/sdk-node";
+import { BatchSpanProcessor, SimpleSpanProcessor, SpanProcessor } from "@opentelemetry/sdk-trace-node";
+import { PrismaInstrumentation } from "@prisma/instrumentation";
 import { TracerProvider } from "./trace";
 
 export type TraceConfig = {
   url: string;
   serviceName: string;
+  prismaInstrumentation: boolean;
+  batchProcessor?: boolean
 }
 
-function config(cfg: TraceConfig) {
+export type ShutdownFunc = () => Promise<void>
+
+let serviceName = "service"
+
+export function configOtel(cfg: TraceConfig): ShutdownFunc {
+  const exporter = new ZipkinExporter({ url: cfg.url, serviceName: cfg.serviceName })
+
+  let processor: SpanProcessor = new BatchSpanProcessor(exporter);
+  if (!cfg.batchProcessor) {
+    processor = new SimpleSpanProcessor(exporter);
+  }
+
+  serviceName = cfg.serviceName;
   const sdk = new NodeSDK({
     serviceName: cfg.serviceName,
-    traceExporter: new ZipkinExporter({ url: cfg.url, serviceName: cfg.serviceName }),
-    instrumentations: [getNodeAutoInstrumentations()],
+    spanProcessors: [processor],
+    instrumentations: [
+      new PrismaInstrumentation({
+        enabled: cfg.prismaInstrumentation,
+        middleware: cfg.prismaInstrumentation
+      }),
+      ...getNodeAutoInstrumentations()
+    ],
   })
   sdk.start();
+
+  return async () => {
+    await sdk.shutdown();
+  }
 }
 
 export class OtelTracerProvider implements TracerProvider {
   private readonly tracer
 
-  constructor(private readonly cfg : TraceConfig) {
-    config(this.cfg);
-    this.tracer = trace.getTracer(this.cfg.serviceName);
+  constructor() {
+    this.tracer = trace.getTracer(serviceName);
   }
 
   trace<T>(name: string, fn: () => Promise<T>): Promise<T> {
