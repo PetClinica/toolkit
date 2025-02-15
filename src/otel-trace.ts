@@ -9,10 +9,9 @@ export type TraceConfig = {
   serviceName: string;
 }
 
-// http://localhost:9411/api/v2/spans
-
 function config(cfg: TraceConfig) {
   const sdk = new NodeSDK({
+    serviceName: cfg.serviceName,
     traceExporter: new ZipkinExporter({ url: cfg.url, serviceName: cfg.serviceName }),
     instrumentations: [getNodeAutoInstrumentations()],
   })
@@ -28,10 +27,15 @@ export class OtelTracerProvider implements TracerProvider {
   }
 
   trace<T>(name: string, fn: () => Promise<T>): Promise<T> {
-    return this.tracer.startActiveSpan(name, (span) => {
-      return fn().finally(() => {
+    return this.tracer.startActiveSpan(name, async (span) => {
+      try {
+        return await fn();
+      } catch (err: any) {
+        span.recordException(err);
+        return await Promise.reject(err);
+      } finally {
         span.end();
-      });
-    })
+      }
+    });
   }
 }

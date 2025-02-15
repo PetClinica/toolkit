@@ -1,8 +1,12 @@
 {
-  "name": "trace",
+  "name": "pet-clinica-trace",
   "version": "1.0.0",
-  "main": "dist/trace.js",
-  "types": "dist/trace.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "postinstall": "npm run build"
+  },
   "devDependencies": {
     "@types/cls-hooked": "^4.3.9",
     "@types/node": "^22.8.6",
